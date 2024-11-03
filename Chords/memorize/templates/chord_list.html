@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <title>Chords in {{ key.name }}</title>
+    <link rel="stylesheet" href="{% static 'chord_list.css' %}"> 
+</head>
+<body>
+    
+    {% include 'header.html' %}
+
+    <div class="container">
+        <h1>Chords in {{ key.name }}</h1>
+        <ul>
+            {% for chord in chords %}
+                <li>
+                    <span class="chord-name">{{ chord.name }}</span>: 
+                    <span class="chord-description">{{ chord.description }}</span>
+                    <ul>
+                        {% for image in chord.images.all %}
+                            <li>
+                                <img src="{{ image.image.url }}" alt="{{ image.description }}" onclick="openLightbox('{{ image.image.url }}')" />
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+        <button class="add-chord-button" onclick="openModal()">Add New Chord</button>
+        <a href="{% url 'key_list' %}" class="back-button">Back to Keys</a>
+    </div>
+
+    <!-- Modal for adding a new chord -->
+    <div class="modal" id="addChordModal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2>Add New Chord</h2>
+            <form method="post" enctype="multipart/form-data" action="{% url 'chord_list' key.id %}">
+                {% csrf_token %}
+                {{ chord_form.as_p }}  <!-- Render the Chord form -->
+                <div class="form-group">
+                    <label for="chordImages">Chord Images:</label>
+                    <input type="file" id="chordImages" name="images" required multiple>
+                </div>
+                <button type="submit" class="submit-button">Add Chord</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox for enlarged image -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Large view" />
+    </div>
+
+    <script>
+        // Function to open the modal
+        function openModal() {
+            document.getElementById("addChordModal").style.display = "flex";
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById("addChordModal").style.display = "none";
+        }
+
+        // Function to open the lightbox
+        function openLightbox(imageUrl) {
+            document.getElementById("lightbox").style.display = "flex";
+            document.getElementById("lightbox-img").src = imageUrl;
+        }
+
+        // Function to close the lightbox
+        function closeLightbox() {
+            document.getElementById("lightbox").style.display = "none";
+        }
+    </script>
+</body>
+</html>

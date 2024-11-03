@@ -1,0 +1,69 @@
+<header class="navbar">
+    <div class="container">
+        <h1><a href="{% url 'key_list' %}">Chord App</a></h1>
+    </div>
+</header>
+<style>
+    /* Navbar styling */
+    .navbar {
+        background-color: #0077b6; /* Brighter sky blue */
+        padding: 15px 30px; /* Space around the content */
+        color: #ffffff; /* White text color */
+        position: fixed; /* Fixes the navbar at the top */
+        top: 0; /* Aligns the navbar at the top of the page */
+        left: 0; /* Aligns the navbar to the left */
+        right: 0; /* Aligns the navbar to the right */
+        z-index: 1000; /* Ensures the navbar is above other content */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+    }
+
+    .navbar .container {
+        display: flex; /* Use flexbox for alignment */
+        justify-content: space-between; /* Space between title and nav */
+        align-items: center; /* Center items vertically */
+        max-width: 800px; /* Match the main container */
+        margin: 0 auto; /* Center the navbar within the page */
+        width: 100%; /* Ensure it takes full width */
+    }
+
+    .navbar h1 {
+        margin: 0; /* Remove margin */
+        font-size: 24px; /* Adjust title size */
+    }
+
+    .navbar a {
+        color: black; /* White text color for the link */
+        text-decoration: none; /* No underline */
+        font-weight: bold; /* Bold links */
+        transition: color 0.3s; /* Smooth color transition */
+        padding: 5px 10px; /* Add padding for better touch target */
+    }
+
+    .navbar a:hover {
+        color: #e0e0e0; /* Lighter color on hover for better visibility */
+    }
+
+    /* Add padding to the body to avoid content being hidden behind the navbar */
+    body {
+        padding-top: 150px; /* Adjust according to the navbar height */
+    }
+</style>
+
+<script>
+    // Function to open the modal for adding keys or chords
+    function openModal() {
+        const currentPage = window.location.pathname; // Get the current page URL path
+        const addItemLink = document.getElementById('add-item');
+
+        // Determine the correct modal to open based on the current page
+        if (currentPage.includes("key_list")) {
+            addItemLink.onclick = function() {
+                document.getElementById("addKeyModal").style.display = "flex"; // Open add key modal
+            };
+        } else if (currentPage.includes("chord_list")) {
+            addItemLink.onclick = function() {
+                document.getElementById("addChordModal").style.display = "flex"; // Open add chord modal
+            };
+        }
+    }
+</script>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Key</title>
+</head>
+<body>
+    <h1>Add a New Key</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Key</button>
+    </form>
+    <a href="{% url 'key_list' %}">Back to Keys</a>
+</body>
+</html>

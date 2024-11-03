@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chord Keys</title>
+    <link rel="stylesheet" href="{% static 'key_list.css' %}">
+</head>
+<body>
+    {% include 'header.html' %}
+    
+    <div class="container">
+        <h1>Memorize these Keys</h1>
+
+        <!-- Display messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <ul>
+            {% for key in keys %}
+                <li><a href="{% url 'chord_list' key.id %}">{{ key.name }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <!-- Add Key button -->
+        <a href="#" class="add-key-button" onclick="openModal()">Add New Key</a>
+    </div>
+
+    <!-- Modal for adding a new key -->
+    <div class="modal" id="addKeyModal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2>Add New Key</h2>
+            <form method="post" action="{% url 'add_key' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="keyName">Key Name:</label>
+                    <input type="text" id="keyName" name="key_name" required>
+                </div>
+                <button type="submit" class="submit-button">Add Key</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the modal
+        function openModal() {
+            document.getElementById("addKeyModal").style.display = "flex";
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById("addKeyModal").style.display = "none";
+        }
+
+        // Close modal if the user clicks outside of the modal content
+        window.onclick = function(event) {
+            var modal = document.getElementById("addKeyModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
