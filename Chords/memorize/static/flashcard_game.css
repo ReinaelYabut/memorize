@@ -1,0 +1,139 @@
+     /* Basic Reset */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #e6f7ff;
+        color: #005073;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #0077b6;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      /* Flashcard container styling */
+      .flashcard-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      /* Flashcard styling */
+      /* Flashcard styling */
+      .flashcard {
+        width: 200px;
+        height: 120px; /* Reduced height of the flashcards */
+        background-color: #ffffff;
+        border: 2px solid #0077b6;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        perspective: 1000px; /* Enable 3D space for flip effect */
+        cursor: pointer;
+      }
+
+
+      .flashcard .flashcard-inner {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d; /* Ensure 3D effect on both sides */
+        transition: transform 0.6s;
+      }
+
+      /* When the card is clicked, it will flip */
+      .flashcard.flipped .flashcard-inner {
+        transform: rotateY(180deg);
+      }
+
+      /* Front side (image) */
+      .flashcard .front,
+      /* Back side (description) */
+      .flashcard .back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden; /* Hide the back side when flipped */
+      }
+
+      .flashcard .front {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+      }
+
+      .flashcard .back {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #0077b6;
+        color: #ffffff;
+        transform: rotateY(180deg); /* Make the back side initially hidden */
+        padding: 10px;
+        text-align: center;
+      }
+
+      /* Flashcard image styling */
+      .flashcard img {
+        max-width: 180px;
+        max-height: 120px;
+        object-fit: cover;
+        margin-bottom: 10px;
+      }
+
+      /* Flashcard text styling */
+      .flashcard h2,
+      .flashcard p {
+        color: #005073;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      /* Shuffle Button Styling */
+      .shuffle-button {
+        background-color: #0077b6;
+        color: white;
+        font-size: 1.2em;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 20px;
+      }
+
+      .shuffle-button:hover {
+        background-color: #005073;
+      }
+
+      .back-to-chords {
+        color: white; /* Set the text color */
+        font-size: 1.2em; /* Set the font size */
+        text-decoration: none; /* Remove underline */
+        padding: 10px 20px; /* Add padding around the text */
+        border: 2px solid #0077b6; /* Add a border around the link */
+        border-radius: 5px; /* Round the corners of the border */
+        transition: background-color 0.3s; /* Add a smooth transition for background color */
+        background-color:#0077b6 ;
+        display: inline-block; /* Ensure it behaves like a block-level element */
+        margin-top: 30px; /* Move it lower with top margin */
+      }
+      
+      .back-to-chords:hover {
+        background-color: #005073; /* Light background color on hover */
+      }
+      

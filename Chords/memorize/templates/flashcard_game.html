@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <title>Flashcard Game - {{ key.name }}</title>
+    <link rel="stylesheet" href="{% static 'flashcard_game.css' %}">
+  </head>
+  <body>
+    <h1>Flashcard Game for {{ key.name }}</h1>
+
+    <button class="shuffle-button" onclick="shuffleFlashcards()">Shuffle Cards</button>
+
+    <div class="flashcard-container" id="flashcard-container">
+      <!-- Flashcards will load here -->
+    </div>
+
+       
+    <a href="{% url 'chord_list' key.id %}" class="back-to-chords"> Back to Chords </a>
+     
+
+    <script>
+      let flashcards = []; // Store the flashcards globally so the shuffle function can access them
+
+      async function loadFlashcards() {
+        try {
+          const response = await fetch("{% url 'flashcard_data' key.id %}");
+          const data = await response.json(); // Expecting an object with a 'chords' key
+
+          // Debug: Log the response to check its structure
+          console.log("Fetched data:", data);
+
+          // Check if 'chords' exists and is an array
+          if (data.chords && Array.isArray(data.chords)) {
+            const container = document.getElementById("flashcard-container");
+
+            // Loop through each chord in the 'chords' array
+            data.chords.forEach((chord) => {
+              const card = document.createElement("div");
+              card.classList.add("flashcard");
+
+              // Create the inner card container (for the flip effect)
+              const cardInner = document.createElement("div");
+              cardInner.classList.add("flashcard-inner");
+
+              // Front side (Image)
+              const front = document.createElement("div");
+              front.classList.add("front");
+              if (chord.images && Array.isArray(chord.images)) {
+                chord.images.forEach((imageUrl) => {
+                  const img = document.createElement("img");
+                  img.src = imageUrl; // Set the image source to the URL
+                  img.alt = chord.name + " image"; // Provide a fallback alt text
+                  front.appendChild(img); // Append the image to the front
+                });
+              }
+              cardInner.appendChild(front);
+
+              // Back side (Description)
+              const back = document.createElement("div");
+              back.classList.add("back");
+              const title = document.createElement("h2");
+              title.textContent = chord.name;
+              const description = document.createElement("p");
+              description.textContent = chord.description;
+              back.appendChild(title);
+              back.appendChild(description);
+              cardInner.appendChild(back);
+
+              // Add the inner content to the flashcard
+              card.appendChild(cardInner);
+
+              // Add the card to the flashcards array
+              flashcards.push(card);
+            });
+
+            // Append all the flashcards to the container
+            flashcards.forEach((card) => {
+              container.appendChild(card);
+            });
+
+            // Add flip functionality to each card
+            flashcards.forEach((card) => {
+              card.addEventListener("click", () => {
+                card.classList.toggle("flipped"); // Toggle flip effect on click
+              });
+            });
+          } else {
+            console.error("Chords data is not an array or is missing:", data.chords);
+          }
+        } catch (error) {
+          console.error("Error loading flashcards:", error);
+        }
+      }
+
+      // Shuffle function (Fisher-Yates algorithm)
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        }
+      }
+
+      // Shuffle and re-render the flashcards when the button is clicked
+      function shuffleFlashcards() {
+        const container = document.getElementById("flashcard-container");
+
+        // Clear the container before appending shuffled cards
+        container.innerHTML = "";
+
+        // Shuffle the flashcards array
+        shuffleArray(flashcards);
+
+        // Append shuffled flashcards to the container
+        flashcards.forEach((card) => {
+          container.appendChild(card);
+        });
+      }
+
+      // Load flashcards when the page is ready
+      loadFlashcards();
+    </script>
+  </body>
+</html>

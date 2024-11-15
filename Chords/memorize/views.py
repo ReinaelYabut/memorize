@@ -5,6 +5,7 @@ from .models import *
 from .forms import *
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.http import JsonResponse
 
 def key_list(request):
     keys = Key.objects.all()
@@ -64,3 +65,37 @@ def add_chord_image(request):
     else:
         form = ChordImageForm()
     return render(request, 'add_chord_image.html', {'form': form})
+
+def flashcard_game(request, key_id):
+    # Get the Key object based on the key_id
+    key = get_object_or_404(Key, id=key_id)
+    
+    # Retrieve all chords associated with this key
+    chords = key.chords.all()  # Assuming a ForeignKey relationship from Chord to Key
+    
+    # Render the flashcard template with the chords
+    return render(request, 'flashcard_game.html', {
+        'key': key,
+        'chords': chords,
+    })
+
+def flashcard_data(request, key_id):
+    # Fetch the Key object
+    key = Key.objects.get(id=key_id)
+    
+    # Fetch all Chords associated with the Key
+    chords = key.chords.all()  # 'chords' is the related_name from the ForeignKey in Chord
+
+    # Prepare the response data
+    chord_data = []
+    for chord in chords:
+        # Gather image URLs for each chord
+        images = [image.image.url for image in chord.images.all()]  # Fetch image URLs
+
+        chord_data.append({
+            'name': chord.name,
+            'description': chord.description,
+            'images': images,  # Include the list of image URLs
+        })
+
+    return JsonResponse({'chords': chord_data})

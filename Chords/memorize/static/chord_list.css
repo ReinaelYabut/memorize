@@ -187,3 +187,20 @@ input, textarea {
     border-radius: 10px; /* Optional rounded corners */
 }
 
+.flashcard-game-button {
+    color: #ffffff !important; /* Set text color to white */
+    background-color: #0077b6 !important; /* Set background color */
+    font-size: 1em !important; /* Set font size */
+    padding: 12px 24px !important; /* Add padding around the text */
+    border: none !important; /* Remove default border */
+    border-radius: 5px !important;  /* Round the corners */
+    text-decoration: none !important; /* Remove underline */
+    display: inline-block !important; /* Makes it behave like a block-level element */
+    transition: background-color 0.3s, transform 0.3s !important; /* Smooth transitions for background and transform */
+    text-align: center !important; /* Center the text */
+}
+
+.flashcard-game-button:hover {
+    background-color: #005073 !important; /* Darken the background color on hover */
+
+}

@@ -26,8 +26,12 @@
                 </li>
             {% endfor %}
         </ul>
+        
         <button class="add-chord-button" onclick="openModal()">Add New Chord</button>
         <a href="{% url 'key_list' %}" class="back-button">Back to Keys</a>
+        
+        <!-- Button to go to the Flashcard Game -->
+        <a href="{% url 'flashcard_game' key.id %}" class="flashcard-game-button">Go to Flashcard Game</a>
     </div>
 
     <!-- Modal for adding a new chord -->
